@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useState, } from 'react';
+import { usePersistentState } from './usePersistentState';
 type Todo = {
   id: string,
   text: string,
@@ -22,38 +21,14 @@ const TODOS_STORAGE_KEY = 'TODOS_KEY'
 
 export default function App() {
 
-  const [todos, setTodos] = useState<Todo[]>([])
-  const [filter, setFilter] = useState<Filter>('all')
   const [text, setText] = useState<string>('')
-  const [loaded, setLoaded] = useState<boolean>(false)
+
+  const [todos, setTodos, loaded] = usePersistentState<Todo[]>(TODOS_STORAGE_KEY,[])
+  const [filter, setFilter, loadedFilter] = usePersistentState<Filter>("filter_key", 'all');
 
 
-  useEffect(() => {
-    const loadingTodos = async () => {
-      try {
-        const json = await AsyncStorage.getItem(TODOS_STORAGE_KEY)
-        if (json != null) setTodos(JSON.parse(json) as Todo[])
-      } catch (error) {
-        console.warn('Failed to load todos', error);
-      } finally {
-        setLoaded(true)
-      }
-    }
 
-    loadingTodos()
-  }, [])
 
-  useEffect(() => {
-    if (!loaded) return
-    const saveTodos = async () => {
-      try {
-        await AsyncStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todos))
-      } catch (error) {
-
-      }
-    }
-    saveTodos()
-  }, [todos, loaded])
 
   const visibleTodos = todos.filter((t) =>
     filter === 'all' ? true : filter === 'done' ? t.done : !t.done
@@ -103,7 +78,7 @@ export default function App() {
 
   const remaining = (todos.filter((t) => !t.done)).length
 
-  if (!loaded) {
+  if (!loaded || !loadedFilter) {
     return <View style={styles.container}>
       <Text style={styles.subtitle}> Todos list is loading ...</Text>
     </View>
