@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, View, Image } from 'react-native';
 
 const BASE_URL = 'https://rickandmortyapi.com/api/character';
@@ -33,11 +32,11 @@ function CharacterCard({ character }: { character: Character }) {
     <View style={styles.cardInfo}>
       <Text style={styles.name}>{character.name}</Text>
       <View style={styles.statusRow}>
-      <View style={[styles.dot, { backgroundColor: STATUS_COLORS[character.status] }]} />
-      <Text style={styles.meta}>
-            {character.status} . {character.species}
-          </Text>
-        
+        <View style={[styles.dot, { backgroundColor: STATUS_COLORS[character.status] }]} />
+        <Text style={styles.meta}>
+          {character.status} . {character.species}
+        </Text>
+
       </View>
     </View>
   </View>
@@ -50,13 +49,29 @@ export default function App() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [query, setQuery] = useState<string>('')
   const [reloadkey, setReloadKey] = useState<number>(0)
+  const [refreshing, setRefreshing] = useState<boolean>(false)
+  const isRefreshRef = useRef<boolean>(false)
+
+
+  const handleRefreshing = () => {
+    isRefreshRef.current = true
+    setRefreshing(true)
+    setReloadKey((prevValue) => prevValue + 1)
+  }
 
   useEffect(() => {
     const controller = new AbortController()
 
     const timer = setTimeout(async () => {
 
-      setLoading(true)
+      // Get the current refreshing state 
+      // (true if comming from pull to refresh)
+      // false if first load or pagination
+      const isRefreshing = isRefreshRef.current
+      isRefreshRef.current = false
+
+      if (!refreshing)
+        setLoading(true)
       setErrorMessage(null)
 
       try {
@@ -76,7 +91,7 @@ export default function App() {
         if (e instanceof Error && e.name === 'AbortError') return;
         setErrorMessage('Could not load characters. Check your connection.');
       } finally {
-        if (!controller.signal.aborted) setLoading(false);
+        if (!controller.signal.aborted) { setLoading(false); setRefreshing(false); }
       }
 
     }, 400)
@@ -103,7 +118,8 @@ export default function App() {
       keyExtractor={(item) => String(item.id)}
       renderItem={({ item }) => <CharacterCard character={item} />}
       ListEmptyComponent={<Text style={styles.empty}>No characters found.</Text>}
-
+      refreshing={refreshing}
+      onRefresh={handleRefreshing}
     />
   }
 
