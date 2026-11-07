@@ -1,28 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, View, Image, TouchableOpacity } from 'react-native';
-import { ApiResponse, BASE_URL, Character, STATUS_COLORS } from '../api';
+import { ApiResponse, BASE_URL, Character, STATUS_COLORS } from '../../api';
 import { useRouter } from 'expo-router';
+import { CharacterCard } from '../../components/CharacterCard';
 
 
-function CharacterCard({ character }: { character: Character }) {
-
-    const router = useRouter()
-    return <TouchableOpacity style={styles.card} onPress={() => {
-        router.push(`/character/${character.id}`)
-    }}>
-        <Image source={{ uri: character.image }} style={styles.avatar} />
-        <View style={styles.cardInfo}>
-            <Text style={styles.name}>{character.name}</Text>
-            <View style={styles.statusRow}>
-                <View style={[styles.dot, { backgroundColor: STATUS_COLORS[character.status] }]} />
-                <Text style={styles.meta}>
-                    {character.status} . {character.species}
-                </Text>
-
-            </View>
-        </View>
-    </TouchableOpacity>
-}
 
 export default function App() {
 

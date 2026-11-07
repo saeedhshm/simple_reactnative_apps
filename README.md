@@ -12,7 +12,7 @@ A classic Expo todo list app. Features adding, toggling, and deleting tasks, fil
 
 ## CharacterApp
 
-An Expo Router app that browses characters from the Rick and Morty API. Includes debounced name search, paginated "load more" with retry, pull-to-refresh, loading/error/empty states, and a detail screen showing species, type, gender, origin, last known location, and episode count.
+An Expo Router app that browses characters from the Rick and Morty API. Includes debounced name search, paginated "load more" with retry, pull-to-refresh, loading/error/empty states, and a detail screen showing species, type, gender, origin, last known location, and episode count. Favorites can be toggled on the detail screen (heart icon) and are persisted with AsyncStorage; a dedicated Favorites tab lists saved characters.
 
 ## fitness-app
 

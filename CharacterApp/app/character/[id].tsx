@@ -4,6 +4,7 @@ import {
     ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image,
 } from "react-native";
 import { BASE_URL, CharacterDetails, STATUS_COLORS } from "../../api";
+import { useFavorites } from '../../FavoritesContext';
 
 function InfoRow({ label, value }: { label: string, value: string }) {
     return <View style={styles.infoRow}>
@@ -19,6 +20,8 @@ export default function CharacterScreen() {
     const [character, setCharacter] = useState<CharacterDetails | null>(null)
     const [error, setError] = useState<string | null>(null)
     const [reloadkey, setReloadKey] = useState<number>(0)
+
+    const { isFavorite, toggleFavorite } = useFavorites();
 
     useEffect(() => {
 
@@ -70,7 +73,13 @@ export default function CharacterScreen() {
 
 
     return <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-        <Stack.Screen options={{ title: character.name }} />
+        <Stack.Screen options={{ title: character.name,
+        headerRight:()=>(
+            <TouchableOpacity onPress={() => toggleFavorite(character.id)} >
+        <Text style={styles.heart}>{isFavorite(character.id) ? '♥' : '♡'}</Text>
+      </TouchableOpacity>
+        )
+        }} />
 
         <Image source={{ uri: character.image }} style={styles.image} />
         <Text style={styles.name}>{character.name}</Text>
@@ -111,7 +120,7 @@ const styles = StyleSheet.create({
     status: { fontSize: 18, color: '#555' },
     card: { alignSelf: 'stretch', backgroundColor: 'white', borderRadius: 12, paddingHorizontal: 16 },
     content: { padding: 20, alignItems: 'center' },
-
+heart: { fontSize: 28, color: '#ff3b30' },
     loadingIndicator: {
 
 
