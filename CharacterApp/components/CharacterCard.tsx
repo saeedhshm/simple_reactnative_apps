@@ -1,10 +1,12 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Character, STATUS_COLORS } from '../api';
+import { useFavorites } from '../FavoritesContext';
 
 export function CharacterCard({ character }: { character: Character }) {
   const router = useRouter();
-
+  const { isFavorite } = useFavorites();
+  
   return (
     <TouchableOpacity
       style={styles.card}

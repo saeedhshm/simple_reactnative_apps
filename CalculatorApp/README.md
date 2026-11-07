@@ -1,56 +1,69 @@
-# Welcome to your Expo app 👋
+# CalculatorApp
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native (Expo) calculator application built with Expo Router and TypeScript.
 
-## Get started
+## Overview
 
-1. Install dependencies
+CalculatorApp provides a dark-themed calculator interface with a standard keypad layout. It supports basic arithmetic operations, chained calculations, decimal input, and clear, with results formatted to avoid floating-point precision artifacts.
+
+## Features
+
+- Digit entry (`0`–`9`) and decimal point input.
+- Basic operators: addition (`+`), subtraction (`−`), multiplication (`×`), division (`÷`).
+- Chained operations (e.g. `2 + 3 + 4` evaluates step by step).
+- Equals (`=`) to compute the result.
+- Clear (`C`) to reset the display and state.
+- Sign (`±`) and percent (`%`) keys present on the keypad.
+- Division by zero returns an `Error` result.
+- Results formatted via `toPrecision(12)` to avoid values like `0.30000000000000004`.
+
+## Tech Stack
+
+- Expo `~58.0.23`
+- React `19.3.0`
+- React Native `0.88.1`
+- Expo Router `~58.0.30`
+- TypeScript `~6.0.3`
+
+## Project Structure
+
+```
+CalculatorApp/
+├── src/
+│   └── app/
+│       ├── _layout.tsx   # Root stack layout
+│       └── index.tsx     # Calculator screen
+├── assets/images/        # App icons and splash images
+├── app.json              # Expo configuration
+├── package.json
+└── tsconfig.json
+```
+
+## Getting Started
+
+1. Install dependencies:
 
    ```bash
+   cd CalculatorApp
    npm install
    ```
 
-2. Start the app
+2. Start the development server:
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+3. Run on a platform:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+   npm run android   # Android emulator
+   npm run ios       # iOS simulator
+   npm run web       # Web browser
+   ```
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Linting
 
 ```bash
-npm run reset-project
+npm run lint
 ```
-
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
-
-### Other setup steps
-
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.

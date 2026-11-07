@@ -1,50 +1,79 @@
-# Welcome to your Expo app 👋
+# fitness-app
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native (Expo) starter application styled with NativeWind/Tailwind CSS, using Expo Router.
 
-## Get started
+## Overview
 
-1. Install dependencies
+fitness-app is an Expo Router project scaffolded from the default template and configured with NativeWind for Tailwind-style styling. It includes a tab navigator with home and explore screens plus a set of reusable themed components, serving as a base for building fitness-related features.
+
+## Features
+
+- File-based routing with Expo Router.
+- Tab navigation (Home and Explore screens).
+- NativeWind/Tailwind CSS styling (utility classes in components).
+- Themed components (`ThemedText`, `ThemedView`) with light/dark support.
+- Parallax scroll view and collapsible sections on the Explore screen.
+- Haptic tab bar feedback.
+- Cross-platform support (Android, iOS, web).
+
+## Tech Stack
+
+- Expo `~58.0.23`
+- React `19.3.0`
+- React Native `0.88.1`
+- Expo Router `~58.0.30`
+- NativeWind (Tailwind CSS for React Native)
+- TypeScript `~6.0.3`
+
+## Project Structure
+
+```
+fitness-app/
+├── app/
+│   ├── _layout.tsx          # Root stack layout
+│   ├── modal.tsx            # Modal screen
+│   └── (tabs)/
+│       ├── _layout.tsx      # Tab navigator
+│       ├── index.tsx        # Home screen
+│       └── explore.tsx      # Explore screen
+├── components/              # Reusable UI components
+├── constants/theme.ts       # Theme constants
+├── hooks/                   # Color scheme / theme hooks
+├── assets/images/           # App icons and splash images
+├── global.css               # Global Tailwind styles
+├── tailwind.config.js       # Tailwind configuration
+├── metro.config.js          # Metro bundler config (NativeWind)
+├── babel.config.js          # Babel config
+├── app.json                 # Expo configuration
+├── package.json
+└── tsconfig.json
+```
+
+## Getting Started
+
+1. Install dependencies:
 
    ```bash
+   cd fitness-app
    npm install
    ```
 
-2. Start the app
+2. Start the development server:
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+3. Run on a platform:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+   npm run android   # Android emulator/device
+   npm run ios       # iOS simulator/device
+   npm run web       # Web browser
+   ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Linting
 
 ```bash
-npm run reset-project
+npm run lint
 ```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.

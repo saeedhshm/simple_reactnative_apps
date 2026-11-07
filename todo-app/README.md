@@ -1,56 +1,88 @@
-# Welcome to your Expo app 👋
+# todo-app
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native (Expo) to-do application backed by a Convex real-time backend, with theming and task management features.
 
-## Get started
+## Overview
 
-1. Install dependencies
+todo-app is an Expo Router project that manages todos through a Convex backend. It supports creating, toggling, editing, and deleting tasks, with a dark/light theme toggle, progress tracking, and a settings screen. The UI uses linear gradients and themed styles for a polished look.
+
+## Features
+
+- Create new todos.
+- Toggle a todo's completed state.
+- Edit an existing todo's text inline.
+- Delete todos with a confirmation dialog.
+- Real-time data sync via Convex queries and mutations.
+- Dark/light theme toggle with themed gradients and colors.
+- Progress state display (completed vs. total).
+- Settings screen with preferences.
+- Empty-state component when no todos exist.
+- Loading spinner while data is fetching.
+
+## Tech Stack
+
+- Expo `~58.0.23`
+- React `19.3.0`
+- React Native `0.88.1`
+- Expo Router `~58.0.30`
+- Convex (real-time backend: schema, queries, mutations)
+- `expo-linear-gradient`
+- `react-native-safe-area-context`
+- `@expo/vector-icons`
+- TypeScript `~6.0.3`
+
+## Project Structure
+
+```
+todo-app/
+├── src/app/
+│   ├── _layout.tsx              # Root layout
+│   └── (tabs)/
+│       ├── _layout.tsx          # Tab navigator
+│       ├── index.tsx            # Todo list screen
+│       └── settings.tsx         # Settings screen
+├── components/                  # Reusable UI components
+├── hooks/useTheme.tsx           # Theme context hook
+├── assets/styles/               # Style factories (home, settings)
+├── convex/                      # Convex backend
+│   ├── schema.ts                # Database schema (todos table)
+│   └── todos_crud.ts            # CRUD mutations/queries
+├── assets/                      # App icons and splash images
+├── app.json                     # Expo configuration
+├── package.json
+└── tsconfig.json
+```
+
+## Getting Started
+
+1. Install dependencies:
 
    ```bash
+   cd todo-app
    npm install
    ```
 
-2. Start the app
+2. Configure Convex (first run):
+
+   ```bash
+   npx convex dev
+   ```
+
+3. Start the development server:
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+4. Run on a platform:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+   npm run android   # Android emulator/device
+   npm run ios       # iOS simulator/device
+   npm run web       # Web browser
+   ```
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Backend
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+Todos are stored in a Convex `todos` table with fields `text` (string) and `isCompleted` (boolean). CRUD operations are defined in `convex/todos_crud.ts`.
 ```
-
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
-
-### Other setup steps
-
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
