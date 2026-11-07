@@ -150,7 +150,7 @@ export default function App() {
     />
   }
 
-  const loadMore = async () => {
+  async function loadMore() {
     if (!nextUrl || loadingMoreRef.current || loading || refreshing || errorMessage)
       return
 
