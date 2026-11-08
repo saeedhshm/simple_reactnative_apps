@@ -6,7 +6,7 @@ import { useFavorites } from '../FavoritesContext';
 export function CharacterCard({ character }: { character: Character }) {
   const router = useRouter();
   const { isFavorite } = useFavorites();
-  
+
   return (
     <TouchableOpacity
       style={styles.card}
@@ -22,6 +22,7 @@ export function CharacterCard({ character }: { character: Character }) {
           </Text>
         </View>
       </View>
+      {isFavorite(character.id) && <Text style={styles.heart}>♥</Text>}
     </TouchableOpacity>
   );
 }
@@ -34,4 +35,5 @@ const styles = StyleSheet.create({
   statusRow: { flexDirection: 'row', alignItems: 'center' },
   dot: { width: 10, height: 10, borderRadius: 5, marginRight: 6 },
   meta: { color: '#555', fontSize: 14 },
+  heart: { position: 'absolute', top: 8, right: 12, fontSize: 18, color: '#ff3b30' },
 });

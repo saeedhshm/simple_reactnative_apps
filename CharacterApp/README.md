@@ -14,6 +14,7 @@ CharacterApp lets users explore characters from the Rick and Morty universe. It 
 - Loading, error, and empty states with retry.
 - Character detail screen: image, name, status, species, type, gender, origin, last known location, and episode count.
 - Favorites: toggle via heart icon on the detail screen; persisted with AsyncStorage.
+- Character cards display a heart indicator when the character is favorited.
 - Favorites tab listing saved characters with retry on failure.
 - Tab navigation (Characters / Favorites) using Expo Router.
 
