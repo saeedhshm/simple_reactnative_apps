@@ -1,16 +1,24 @@
 # Simple React Native Apps
 
-A collection of small React Native (Expo) applications, each in its own folder. Each app has its own README with a full description — follow the links below.
+A collection of small React Native (Expo) applications, each demonstrating different functionalities, libraries, and architectures.
 
-## Apps
+## 🚀 Applications
 
-- **[CalculatorApp](./CalculatorApp/README.md)** — Expo Router calculator with basic arithmetic, chained operations, and clear. [Full description →](./CalculatorApp/README.md)
-- **[TodoApp](./TodoApp/README.md)** — Classic Expo to-do list with filters and AsyncStorage persistence. [Full description →](./TodoApp/README.md)
-- **[CharacterApp](./CharacterApp/README.md)** — Rick and Morty character browser with search, pagination, pull-to-refresh, detail screen, and persisted favorites. [Full description →](./CharacterApp/README.md)
-- **[fitness-app](./fitness-app/README.md)** — Expo Router starter styled with NativeWind/Tailwind, tabs and themed components. [Full description →](./fitness-app/README.md)
-- **[todo-app](./todo-app/README.md)** — Expo Router to-do app backed by a Convex real-time backend with theming. [Full description →](./todo-app/README.md)
+| App Name | Description | Link |
+| :--- | :--- | :--- |
+| **CalculatorApp** | A calculator built with Expo Router, supporting basic arithmetic and chained operations. | [README](./CalculatorApp/README.md) |
+| **CharacterApp** | A Rick and Morty character browser featuring search, pagination, and persisted favorites. | [README](./CharacterApp/README.md) |
+| **FormApp** | A boilerplate for building forms and handling user input in React Native. | [README](./FormApp/README.md) |
+| **TodoApp** | A classic to-do list implementing AsyncStorage for local data persistence. | [README](./TodoApp/README.md) |
+| **todo-app** | A real-time to-do application powered by a Convex backend with custom theming. | [README](./todo-app/README.md) |
+| **fitness-app** | A starter project showcasing NativeWind (Tailwind CSS) and themed UI components. | [README](./fitness-app/README.md) |
 
 ---
 
-> This README stays short. When a new app is added, add an entry above linking to its README; when an existing app gains or changes features, update both its own README and the short summary here.
-```
+## 🛠️ Development
+Each app is contained within its own directory. To get started with any specific app:
+1. Navigate to the app directory: `cd <AppFolderName>`
+2. Install dependencies: `npm install`
+3. Start the development server: `npx expo start`
+
+> **Note:** Please update this index when adding new applications to the collection.
