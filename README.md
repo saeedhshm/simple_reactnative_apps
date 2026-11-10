@@ -8,7 +8,7 @@ A collection of small React Native (Expo) applications, each demonstrating diffe
 | :--- | :--- | :--- |
 | **CalculatorApp** | A calculator built with Expo Router, supporting basic arithmetic and chained operations. | [README](./CalculatorApp/README.md) |
 | **CharacterApp** | A Rick and Morty character browser featuring search, pagination, and persisted favorites. | [README](./CharacterApp/README.md) |
-| **FormApp** | A boilerplate for building forms and handling user input in React Native. | [README](./FormApp/README.md) |
+| **FormApp** | A registration form with avatar picker, field validation, password toggle, and keyboard handling. | [README](./FormApp/README.md) |
 | **TodoApp** | A classic to-do list implementing AsyncStorage for local data persistence. | [README](./TodoApp/README.md) |
 | **todo-app** | A real-time to-do application powered by a Convex backend with custom theming. | [README](./todo-app/README.md) |
 | **fitness-app** | A starter project showcasing NativeWind (Tailwind CSS) and themed UI components. | [README](./fitness-app/README.md) |

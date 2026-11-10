@@ -15,7 +15,7 @@ import {
   View,
 } from 'react-native';
 import type { ComponentRef } from 'react';
-
+import { AvatarPicker } from './components/AvatarPicker';
 
 type FormFieldProps = TextInputProps & {
   label: string,
@@ -26,20 +26,31 @@ type FormFieldProps = TextInputProps & {
 const FormField = forwardRef<
   React.ComponentRef<typeof TextInput>,
   FormFieldProps
->(({ label, error, value, style, children, ...rest }, ref) => {
+>(({ label, error, value, style, children, onBlur, onFocus, ...rest }, ref) => {
+
+  const [isFocused, setIsFocised] = useState(false)
+
   return <View style={[styles.field]}>
     <Text>{label}</Text>
-    <View style={[styles.inputRow, error !== '' && styles.inputError]}>
+    <View style={[styles.inputRow, isFocused && styles.inputFocused, error !== '' && styles.inputError]}>
       <TextInput
         {...rest}
         ref={ref}
-        style={[styles.input, {flex:1},style]}
+        style={[styles.input, { flex: 1 }, style]}
+        onFocus={(event) => {
+          setIsFocised(true)
+          onFocus?.(event)
+        }}
+        onBlur={(event) => {
+          setIsFocised(false)
+          onBlur?.(event)
+        }}
       />
-       {children && (
-          <View style={styles.actionContainer}>
-            {children}
-          </View>
-        )}
+      {children && (
+        <View style={styles.actionContainer}>
+          {children}
+        </View>
+      )}
     </View>
 
     {error !== '' && <Text style={styles.error}>{error}</Text>}
@@ -84,15 +95,40 @@ export default function App() {
   const [submitError, setSubmitError] = useState('')
   const [isLoading, setLoading] = useState(false)
 
+  const [avatar, setAvatar] = useState<string | null>(null);
+
+  const nameRef = useRef<ComponentRef<typeof TextInput>>(null);
   const emailRef = useRef<ComponentRef<typeof TextInput>>(null);
   const passwordRef = useRef<ComponentRef<typeof TextInput>>(null);
   const confirmRef = useRef<ComponentRef<typeof TextInput>>(null);
+
+  const [visited, setVisited] = useState<Record<keyof FormValues, boolean>>({
+    name: false,
+    email: false,
+    password: false,
+    confirm: false
+  })
 
   const updateField = (field: keyof FormValues, text: string) => {
     setValues((prevs) => ({
       ...prevs,
       [field]: text
     }))
+
+    const error = getFieldError(field, text);
+    setErrors(prev => ({
+      ...prev,
+      [field]: error,
+      ...(field === 'password'
+        ? {
+          confirm:
+            values.confirm === text
+              ? ''
+              : 'Passwords do not match',
+        }
+        : {}),
+
+    }));
   }
   const updateError = (field: keyof FormValues, text: string) => {
     setErrors((prevs) => ({
@@ -100,7 +136,36 @@ export default function App() {
       [field]: text
     }))
   }
+  function getFieldError(
+    field: keyof FormValues,
+    text: string,
+  ): string {
+    switch (field) {
+      case 'name':
+        if (text.trim().length < 2) {
+          return 'Name must be at least 2 characters';
+        }
+        return '';
 
+      case 'email':
+        if (!text.includes('@')) {
+          return 'Invalid email';
+        }
+        return '';
+
+      case 'password':
+        if (text.length < 8) {
+          return 'Password must be at least 8 characters';
+        }
+        return '';
+
+      case 'confirm':
+        if (text !== values.password) {
+          return 'Passwords do not match';
+        }
+        return '';
+    }
+  }
   const validateForm = () => {
     const newErrors: FormErrors = {
       name: '',
@@ -166,6 +231,31 @@ export default function App() {
     }
   };
 
+  const focusFirstError = (formErrors: FormErrors) => {
+
+    if (formErrors.name !== '') {
+      nameRef.current?.focus()
+      return
+    }
+
+    if (formErrors.email !== '') {
+      emailRef.current?.focus()
+      return
+    }
+
+    if (formErrors.password !== '') {
+      passwordRef.current?.focus()
+      return
+    }
+
+    if (formErrors.confirm !== '') {
+      confirmRef.current?.focus()
+      return
+    }
+
+  }
+
+
   const handleSubmit = async () => {
     if (isLoading) return;
     const formErrors = validateForm();
@@ -174,6 +264,9 @@ export default function App() {
       (error) => error !== ''
     );
 
+    if (hasError) {
+      focusFirstError(formErrors)
+    }
     if (!acceptedTerms) {
       setSubmitError('You must accept terms');
     }
@@ -204,16 +297,27 @@ export default function App() {
       <ScrollView contentContainerStyle={styles.content}
         keyboardShouldPersistTaps="handled">
         <Text style={styles.title}>Create account</Text>
+        <AvatarPicker
+          avatar={avatar}
+          onChange={setAvatar}
+        />
         <FormField
           label='Full name'
-          error={errors.name}
+          ref={nameRef}
+          error={visited.name ? errors.name : ''}
           value={values.name}
           placeholder='Enter your name'
           onChangeText={(text) => {
             updateField('name', text)
 
           }}
-          onBlur={() => validateField('name')}
+          onBlur={() => {
+            setVisited(prev => ({
+              ...prev,
+              name: true,
+            }));
+            validateField('name')
+          }}
           autoCapitalize='words'
           returnKeyType="next"
           onSubmitEditing={() => emailRef.current?.focus()}
@@ -224,7 +328,7 @@ export default function App() {
 
         <FormField
           label='Email'
-          error={errors.email}
+          error={visited.email ? errors.email : ''}
           style={styles.input}
           placeholder="Enter your email"
           value={values.email}
@@ -234,14 +338,20 @@ export default function App() {
           }}
           keyboardType='email-address'
           autoCapitalize='none'
-          onBlur={() => validateField('email')}
+          onBlur={() => {
+            setVisited(prev => ({
+              ...prev,
+              email: true,
+            }));
+            validateField('email')
+          }}
           returnKeyType="next"
           onSubmitEditing={() => passwordRef.current?.focus()}
         />
 
 
         <FormField
-          error={errors.password}
+          error={visited.password ? errors.password : ''}
           label='Password'
           style={styles.input}
           ref={passwordRef}
@@ -250,7 +360,13 @@ export default function App() {
           onChangeText={(text) => {
             updateField('password', text)
           }}
-          onBlur={() => validateField('password')}
+          onBlur={() => {
+            setVisited(prev => ({
+              ...prev,
+              password: true,
+            }));
+            validateField('password')
+          }}
           secureTextEntry={!showPassword}
           returnKeyType="next"
           onSubmitEditing={() => confirmRef.current?.focus()}
@@ -263,7 +379,7 @@ export default function App() {
 
         <FormField
           label='Confirm password'
-          error={errors.confirm}
+          error={visited.confirm ? errors.confirm : ''}
           ref={confirmRef}
           style={styles.input}
           placeholder="Confirm your password"
@@ -272,7 +388,13 @@ export default function App() {
             updateField('confirm', text)
           }}
           secureTextEntry={!showPassword}
-          onBlur={() => validateField('confirm')}
+          onBlur={() => {
+            setVisited(prev => ({
+              ...prev,
+              confirm: true,
+            }));
+            validateField('confirm')
+          }}
           returnKeyType="done"
           onSubmitEditing={() => confirmRef.current?.blur()}
         />
@@ -367,12 +489,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#fff',
     overflow: 'hidden',
-    marginTop:5
+    marginTop: 5
   },
   actionContainer: {
     paddingHorizontal: 12,
     justifyContent: 'center',
   },
+  inputFocused: {
+    borderColor: 'blue',
+  },
+
   inputError: {
     borderColor: 'red',
   },
